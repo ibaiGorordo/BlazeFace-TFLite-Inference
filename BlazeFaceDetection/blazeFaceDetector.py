@@ -1,3 +1,4 @@
+import time
 import cv2
 import numpy as np
 import tensorflow as tf
@@ -13,6 +14,9 @@ class blazeFaceDetector():
 		self.scoreThreshold = scoreThreshold
 		self.iouThreshold = iouThreshold
 		self.sigmoidScoreThreshold = np.log(self.scoreThreshold/(1-self.scoreThreshold))
+		self.fps = 0
+		self.timeLastPrediction = time.time()
+		self.frameCounter = 0
 
 		# Initialize model based on model type
 		self.initializeModel(type)
@@ -48,7 +52,24 @@ class blazeFaceDetector():
 		# Filter results with non-maximum suppression
 		detectionResults = self.filterWithNonMaxSupression(boxes, keypoints, scores)
 
+		# Update fps calculator
+		self.updateFps()
+
 		return detectionResults
+
+	def updateFps(self):
+		updateRate = 1
+		self.frameCounter += 1
+
+		# Every updateRate frames calculate the fps based on the ellapsed time
+		if self.frameCounter == updateRate:
+			timeNow = time.time()
+			ellapsedTime = timeNow - self.timeLastPrediction
+
+			self.fps = int(updateRate/ellapsedTime)
+			self.frameCounter = 0
+			self.timeLastPrediction = timeNow
+
 
 	def drawDetections(self, img, results):
 
@@ -56,6 +77,7 @@ class blazeFaceDetector():
 		keypoints = results.keypoints
 		scores = results.scores
 
+		# Add bounding boxes and keypoints
 		for boundingBox, keypoints, score in zip(boundingBoxes, keypoints, scores):
 			x1 = (self.img_width * boundingBox[0]).astype(int)
 			x2 = (self.img_width * boundingBox[2]).astype(int)
@@ -65,10 +87,15 @@ class blazeFaceDetector():
 			cv2.putText(img, '{:.2f}'.format(score), (x1, y1 - 6)
 								, cv2.FONT_HERSHEY_SIMPLEX, 0.6, (22, 22, 250), 2)
 
+			# Add keypoints for the current face
 			for keypoint in keypoints:
 				xKeypoint = (keypoint[0] * self.img_width).astype(int)
 				yKeypoint = (keypoint[1] * self.img_height).astype(int)
 				cv2.circle(img,(xKeypoint,yKeypoint), 4, (214, 202, 18), -1)
+
+		# Add fps counter
+		# cv2.putText(img, f'FPS: {self.fps}', (40, 40)
+		# 						,cv2.FONT_HERSHEY_SIMPLEX, 1, (22, 250, 22), 2)
 
 		return img
 
@@ -168,7 +195,7 @@ class blazeFaceDetector():
 
 		return boxes, keypoints
 
-	def filterDetections(self,output1):
+	def filterDetections(self, output1):
 
 		# Filter based on the score threshold before applying sigmoid function
 		goodDetections = np.where(output1 > self.sigmoidScoreThreshold)[0]
