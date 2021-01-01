@@ -1,10 +1,10 @@
 import cv2
-from blazeFaceDetector import blazeFaceDetector
+from BlazeFaceDetection.blazeFaceDetector import blazeFaceDetector
 
 scoreThreshold = 0.7
 iouThreshold = 0.3
 
-imagePath = "image.jpg"
+imagePath = "img/image.jpg"
 
 # Initialize face detector
 faceDetector = blazeFaceDetector("front", scoreThreshold, iouThreshold)

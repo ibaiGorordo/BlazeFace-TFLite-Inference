@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import tensorflow as tf
-from blazeFaceUtils import gen_anchors, SsdAnchorsCalculatorOptions
+from BlazeFaceDetection.blazeFaceUtils import gen_anchors, SsdAnchorsCalculatorOptions
 
 KEY_POINT_SIZE = 6
 MAX_FACE_NUM = 100
@@ -22,9 +22,9 @@ class blazeFaceDetector():
 
 	def initializeModel(self, type):
 		if type == "front":
-			self.interpreter = tf.lite.Interpreter(model_path="face_detection_front.tflite")
+			self.interpreter = tf.lite.Interpreter(model_path="models/face_detection_front.tflite")
 		elif type =="back":
-			self.interpreter = tf.lite.Interpreter(model_path="face_detection_back.tflite")
+			self.interpreter = tf.lite.Interpreter(model_path="models/face_detection_back.tflite")
 		self.interpreter.allocate_tensors()
 
 		# Get model info
