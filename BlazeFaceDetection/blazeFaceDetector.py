@@ -121,10 +121,10 @@ class blazeFaceDetector():
 
 		elif type == "back":
 			# Options to generate anchors for SSD object detection models.
-			ssd_anchors_calculator_options = SsdAnchorsCalculatorOptions(input_size_width=128, input_size_height=128, min_scale=0.1484375, max_scale=0.75
+			ssd_anchors_calculator_options = SsdAnchorsCalculatorOptions(input_size_width=256, input_size_height=256, min_scale=0.15625, max_scale=0.75
 					, anchor_offset_x=0.5, anchor_offset_y=0.5, num_layers=4
 					, feature_map_width=[], feature_map_height=[]
-					, strides=[8, 16, 16, 16], aspect_ratios=[1.0]
+					, strides=[16, 32, 32, 32], aspect_ratios=[1.0]
 					, reduce_boxes_in_lowest_layer=False, interpolated_scale_aspect_ratio=1.0
 					, fixed_anchor_size=True)
 

@@ -7,7 +7,7 @@ iouThreshold = 0.3
 imagePath = "img/image.jpg"
 
 # Initialize face detector
-faceDetector = blazeFaceDetector("front", scoreThreshold, iouThreshold)
+faceDetector = blazeFaceDetector("back", scoreThreshold, iouThreshold)
 
 # Read RGB images
 img = cv2.imread(imagePath, cv2.IMREAD_COLOR)
