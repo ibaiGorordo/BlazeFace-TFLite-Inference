@@ -3,11 +3,12 @@ from BlazeFaceDetection.blazeFaceDetector import blazeFaceDetector
 
 scoreThreshold = 0.7
 iouThreshold = 0.3
+modelType = "back"
 
 imagePath = "img/image.jpg"
 
 # Initialize face detector
-faceDetector = blazeFaceDetector("back", scoreThreshold, iouThreshold)
+faceDetector = blazeFaceDetector(modelType, scoreThreshold, iouThreshold)
 
 # Read RGB images
 img = cv2.imread(imagePath, cv2.IMREAD_COLOR)

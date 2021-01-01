@@ -3,9 +3,10 @@ from BlazeFaceDetection.blazeFaceDetector import blazeFaceDetector
 
 scoreThreshold = 0.7
 iouThreshold = 0.3
+modelType = "front"
 
 # Initialize face detector
-faceDetector = blazeFaceDetector("front", scoreThreshold, iouThreshold)
+faceDetector = blazeFaceDetector(modelType, scoreThreshold, iouThreshold)
 
 # Initialize webcam
 camera = cv2.VideoCapture(0, cv2.CAP_DSHOW)

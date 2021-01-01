@@ -7,9 +7,10 @@ videoPafy = pafy.new(videoUrl)
 
 scoreThreshold = 0.7
 iouThreshold = 0.3
+modelType = "front"
 
 # Initialize face detector
-faceDetector = blazeFaceDetector("front", scoreThreshold, iouThreshold)
+faceDetector = blazeFaceDetector(modelType, scoreThreshold, iouThreshold)
 
 # Initialize video
 # cap = cv2.VideoCapture("img/test.mp4")
