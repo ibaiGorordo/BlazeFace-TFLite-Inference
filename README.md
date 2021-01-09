@@ -35,7 +35,7 @@ pip install pafy youtube-dl
  python webcamFaceDetection.py
  ```
  
-  * **Image inference**:
+  * **Video inference**:
  
  ```
  python videoFaceDetection.py
