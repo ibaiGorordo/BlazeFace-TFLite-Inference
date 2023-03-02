@@ -2,6 +2,7 @@ import time
 import cv2
 import numpy as np
 import tensorflow as tf
+import tflite_runtime.interpreter as tflite
 from BlazeFaceDetection.blazeFaceUtils import gen_anchors, SsdAnchorsCalculatorOptions
 
 KEY_POINT_SIZE = 6
@@ -9,7 +10,7 @@ MAX_FACE_NUM = 100
 
 class blazeFaceDetector():
 
-	def __init__(self, type = "front", scoreThreshold = 0.7, iouThreshold = 0.3):
+	def __init__(self, type = "front", scoreThreshold = 0.7, iouThreshold = 0.3, ext_delegate=None):
 		self.type = type
 		self.scoreThreshold = scoreThreshold
 		self.iouThreshold = iouThreshold
@@ -19,6 +20,7 @@ class blazeFaceDetector():
 		self.frameCounter = 0
 
 		# Initialize model based on model type
+		self.ext_delegate = ext_delegate
 		self.initializeModel(type)
 
 		# Generate anchors for model
@@ -26,9 +28,9 @@ class blazeFaceDetector():
 
 	def initializeModel(self, type):
 		if type == "front":
-			self.interpreter = tf.lite.Interpreter(model_path="models/face_detection_front.tflite")
+			self.interpreter = tflite.Interpreter(model_path="models/face_detection_front.tflite", experimental_delegates=self.ext_delegate, num_threads=4)
 		elif type =="back":
-			self.interpreter = tf.lite.Interpreter(model_path="models/face_detection_back.tflite")
+			self.interpreter = tflite.Interpreter(model_path="models/face_detection_back.tflite", experimental_delegates=self.ext_delegate, num_threads=4)
 		self.interpreter.allocate_tensors()
 
 		# Get model info
